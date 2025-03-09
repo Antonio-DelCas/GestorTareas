@@ -5,7 +5,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
 
-  // Añadir una nueva tarea (inicialmente no completada)
+  // Añadir una nueva tarea
   const addTask = () => {
     if (newTask.trim() !== '') {
       setTasks([...tasks, { text: newTask, completed: false }]);
@@ -26,6 +26,15 @@ function App() {
     setTasks(updatedTasks);
   };
 
+  // Vaciar la lista completa de tareas
+  const clearTasks = () => {
+    setTasks([]);
+  };
+
+  // Contadores
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(task => task.completed).length;
+
   return (
     <div className="App">
       <h1>Gestor de Tareas</h1>
@@ -39,18 +48,29 @@ function App() {
       />
       <button onClick={addTask}>Añadir</button>
 
+      {/* Contadores */}
+      <p>Total de tareas: {totalTasks}</p>
+      <p>Tareas completadas: {completedTasks}</p>
+
       {/* Lista de tareas */}
-      <ul>
-        {tasks.map((task, index) => (
-          <li key={index} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-            {task.text}
-            <button onClick={() => toggleTaskCompletion(index)}>
-              {task.completed ? 'Desmarcar' : 'Completar'}
-            </button>
-            <button onClick={() => deleteTask(index)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+      {totalTasks === 0 ? (
+        <p>No hay tareas pendientes</p>
+      ) : (
+        <ul>
+          {tasks.map((task, index) => (
+            <li key={index} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+              {task.text}
+              <button onClick={() => toggleTaskCompletion(index)}>
+                {task.completed ? 'Desmarcar' : 'Completar'}
+              </button>
+              <button onClick={() => deleteTask(index)}>Eliminar</button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Vaciar lista */}
+      {totalTasks > 0 && <button onClick={clearTasks}>Vaciar Lista</button>}
     </div>
   );
 }
