@@ -3,40 +3,78 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #242424; /* Fondo oscuro */
+  min-height: 100vh; /* Asegura que el contenido ocupe toda la altura */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+h1 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input, select, button {
+  font-size: 1rem;
+  padding: 0.5em;
+  margin: 0.5em;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #333;
+  color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+input[type="date"] {
+  background-color: #444;
+  border: 1px solid #666;
 }
 
-.card {
-  padding: 2em;
+button {
+  cursor: pointer;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  margin-left: 5px;
+  border-radius: 8px;
 }
 
-.read-the-docs {
-  color: #888;
+button:hover {
+  background-color: #535bf2;
+}
+
+/* Estilo para las tareas */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+li {
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li.completed {
+  text-decoration: line-through;
+  background-color: #444;
+}
+
+li span {
+  margin-right: 10px; /* Separar el texto de los botones */
+}
+
+/* Filtros */
+select {
+  padding: 0.4rem 1rem;
+  margin-top: 1rem;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  border: 1px solid #555;
 }
