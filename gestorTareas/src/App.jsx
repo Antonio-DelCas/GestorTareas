@@ -4,6 +4,9 @@ import './App.css';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const [editTask, setEditTask] = useState(null); // Para editar una tarea
+  const [editText, setEditText] = useState(''); // El texto que se va a editar
+  const [filter, setFilter] = useState('all'); // Filtro de tareas
 
   // Añadir una nueva tarea
   const addTask = () => {
@@ -31,9 +34,28 @@ function App() {
     setTasks([]);
   };
 
-  // Contadores
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(task => task.completed).length;
+  // Editar una tarea
+  const editTaskText = (index) => {
+    setEditTask(index);
+    setEditText(tasks[index].text);
+  };
+
+  // Guardar la tarea editada
+  const saveEdit = () => {
+    const updatedTasks = tasks.map((task, index) => 
+      index === editTask ? { ...task, text: editText } : task
+    );
+    setTasks(updatedTasks);
+    setEditTask(null);
+    setEditText('');
+  };
+
+  // Filtrar las tareas
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === 'completed') return task.completed;
+    if (filter === 'pending') return !task.completed;
+    return true; // Mostrar todas
+  });
 
   return (
     <div className="App">
@@ -49,28 +71,49 @@ function App() {
       <button onClick={addTask}>Añadir</button>
 
       {/* Contadores */}
-      <p>Total de tareas: {totalTasks}</p>
-      <p>Tareas completadas: {completedTasks}</p>
+      <p>Total de tareas: {tasks.length}</p>
+      <p>Tareas completadas: {tasks.filter(task => task.completed).length}</p>
+
+      {/* Filtro de tareas */}
+      <div>
+        <button onClick={() => setFilter('all')}>Todas</button>
+        <button onClick={() => setFilter('completed')}>Completadas</button>
+        <button onClick={() => setFilter('pending')}>Pendientes</button>
+      </div>
 
       {/* Lista de tareas */}
-      {totalTasks === 0 ? (
+      {tasks.length === 0 ? (
         <p>No hay tareas pendientes</p>
       ) : (
         <ul>
-          {tasks.map((task, index) => (
+          {filteredTasks.map((task, index) => (
             <li key={index} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-              {task.text}
-              <button onClick={() => toggleTaskCompletion(index)}>
-                {task.completed ? 'Desmarcar' : 'Completar'}
-              </button>
-              <button onClick={() => deleteTask(index)}>Eliminar</button>
+              {editTask === index ? (
+                <>
+                  <input 
+                    type="text" 
+                    value={editText} 
+                    onChange={(e) => setEditText(e.target.value)} 
+                  />
+                  <button onClick={saveEdit}>Guardar</button>
+                </>
+              ) : (
+                <>
+                  {task.text}
+                  <button onClick={() => toggleTaskCompletion(index)}>
+                    {task.completed ? 'Desmarcar' : 'Completar'}
+                  </button>
+                  <button onClick={() => deleteTask(index)}>Eliminar</button>
+                  <button onClick={() => editTaskText(index)}>Editar</button>
+                </>
+              )}
             </li>
           ))}
         </ul>
       )}
 
       {/* Vaciar lista */}
-      {totalTasks > 0 && <button onClick={clearTasks}>Vaciar Lista</button>}
+      {tasks.length > 0 && <button onClick={clearTasks}>Vaciar Lista</button>}
     </div>
   );
 }
